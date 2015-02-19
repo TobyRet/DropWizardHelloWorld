@@ -2,6 +2,7 @@ package com.codurance;
 
 import com.codurance.helloworld.HelloWorldResource;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
@@ -19,6 +20,7 @@ public class SampleApplication extends Application<SampleConfiguration> {
 
 	@Override
 	public void initialize(Bootstrap<SampleConfiguration> bootstrap) {
+		bootstrap.addBundle(new AssetsBundle("/assets"));
 		bootstrap.addBundle(new ViewBundle());
 	}
 
