@@ -13,6 +13,7 @@
 		<junit.version>4.11</junit.version>
 		<mockito.version>1.9.5</mockito.version>
 		<cucumber.version>1.1.6</cucumber.version>
+        <dropwizard.version>0.7.1</dropwizard.version>
 	</properties>
 
 	<dependencies>
@@ -52,9 +53,9 @@
 			<scope>test</scope>
 		</dependency>
         <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
+            <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
-            <version>0.6.2</version>
+            <version>${dropwizard.version}</version>
         </dependency>
 	</dependencies>
 
