@@ -1,5 +1,6 @@
 package com.codurance;
 
+import com.codurance.db.CassandraClient;
 import com.codurance.resources.GigResource;
 import com.codurance.resources.HelloWorldResource;
 import io.dropwizard.Application;
@@ -12,6 +13,9 @@ public class SampleApplication extends Application<SampleConfiguration> {
 
 	public static void main(String[] args) throws Exception {
 		new SampleApplication().run(args);
+		CassandraClient client = new CassandraClient();
+		client.connect("127.0.0.1");
+		client.close();
 	}
 
 	@Override
