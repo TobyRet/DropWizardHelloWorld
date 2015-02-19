@@ -1,4 +1,4 @@
-package com.codurance.helloworld;
+package com.codurance.views;
 
 import io.dropwizard.views.View;
 

@@ -1,4 +1,6 @@
-package com.codurance.helloworld;
+package com.codurance.resources;
+
+import com.codurance.views.HelloWorldView;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
