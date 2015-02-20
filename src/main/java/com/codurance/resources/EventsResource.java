@@ -1,7 +1,7 @@
 package com.codurance.resources;
 
-import com.codurance.db.CassandraClient;
 import com.codurance.model.Event;
+import com.codurance.model.Events;
 import com.codurance.views.EventFormView;
 import com.codurance.views.EventsView;
 import com.google.common.collect.ImmutableList;
@@ -21,10 +21,10 @@ import java.util.List;
 @Path("/events")
 public class EventsResource {
 	public static final DateTimeFormatter DATE_CONVERSION = DateTimeFormatter.ISO_LOCAL_DATE;
-	private final CassandraClient cassandraClient;
+	private final Events events;
 
-	public EventsResource(CassandraClient cassandraClient) {
-		this.cassandraClient = cassandraClient;
+	public EventsResource(Events events) {
+		this.events = events;
 	}
 
 	@GET
@@ -38,6 +38,7 @@ public class EventsResource {
 	public EventsView getAllEvents() {
 		List<String> list = ImmutableList.of("red", "green", "blue");
 		return new EventsView(list);
+
 	}
 
 	@POST
@@ -52,7 +53,7 @@ public class EventsResource {
 		LocalDate date = LocalDate.parse(dateText, DATE_CONVERSION);
 
 		Event event = new Event(name, artist, date, genre, location);
-		cassandraClient.add(event);
+		events.add(event);
 		servletResponse.sendRedirect("/events/all");
 	}
 
