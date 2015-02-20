@@ -2,7 +2,6 @@ package com.codurance;
 
 import com.codurance.db.CassandraClient;
 import com.codurance.resources.EventsResource;
-import com.codurance.resources.HelloWorldResource;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -36,7 +35,6 @@ public class SampleApplication extends Application<SampleConfiguration> {
 
 	@Override
 	public void run(SampleConfiguration sampleConfiguration, Environment environment) throws Exception {
-		environment.jersey().register(new HelloWorldResource());
 		environment.jersey().register(new EventsResource(client));
 	}
 }
