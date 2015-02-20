@@ -1,6 +1,6 @@
 package com.codurance.db;
 
-import com.codurance.model.Gig;
+import com.codurance.model.Event;
 import com.datastax.driver.core.*;
 
 import java.time.ZoneId;
@@ -54,8 +54,8 @@ public class CassandraClient {
 		cluster.close();
 	}
 
-	public void add(Gig gig) {
-		Date gigDate = Date.from(gig.getDate().atStartOfDay(ZONE_ID).toInstant());
-		session.execute(new BoundStatement(addGig).bind(gig.getName(), gig.getArtist(), gigDate, gig.getLocation()));
+	public void add(Event event) {
+		Date eventDate = Date.from(event.getDate().atStartOfDay(ZONE_ID).toInstant());
+		session.execute(new BoundStatement(addGig).bind(event.getName(), event.getArtist(), eventDate, event.getLocation()));
 	}
 }

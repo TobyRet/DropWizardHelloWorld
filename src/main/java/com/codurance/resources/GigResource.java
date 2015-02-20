@@ -1,7 +1,7 @@
 package com.codurance.resources;
 
 import com.codurance.db.CassandraClient;
-import com.codurance.model.Gig;
+import com.codurance.model.Event;
 import com.codurance.views.GigFormView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -46,8 +46,8 @@ public class GigResource {
 
 		LocalDate date = LocalDate.parse(dateText, DATE_CONVERSION);
 
-		Gig gig = new Gig(name, artist, date, location);
-		cassandraClient.add(gig);
+		Event event = new Event(name, artist, date, location);
+		cassandraClient.add(event);
 		servletResponse.sendRedirect("/success");
 	}
 
