@@ -1,27 +1,54 @@
 package com.codurance.resources;
 
+import com.codurance.db.CassandraClient;
+import com.codurance.model.Gig;
 import com.codurance.views.GigFormView;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-import java.net.URI;
+import javax.ws.rs.core.Context;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 @Path("gigs")
 public class GigResource {
+	public static final DateTimeFormatter DATE_CONVERSION = DateTimeFormatter.ISO_LOCAL_DATE;
+	private final CassandraClient cassandraClient;
+
+	public GigResource(CassandraClient cassandraClient) {
+		this.cassandraClient = cassandraClient;
+	}
+
 	@GET
 	@Path("/new")
 	public GigFormView getAllGigs() {
 		return new GigFormView();
 	}
 
+	@GET
+	@Path("success")
+	public String eventAddedSuccessfully() {
+		return "Event added successfully";
+	}
+
 	@POST
 	@Path("/create")
-	public Response create(String gig) {
-		URI redirection = URI.create("/success");
-		return Response.seeOther(redirection).build();
+	public void create( @FormParam("gigListingName") String name,
+						@FormParam("gigListingArtist") String artist,
+						@FormParam("gigListingDate") String dateText,
+						@FormParam("gigListingLocation") String location,
+						@Context HttpServletResponse servletResponse) throws IOException {
+
+		LocalDate date = LocalDate.parse(dateText, DATE_CONVERSION);
+
+		Gig gig = new Gig(name, artist, date, location);
+		cassandraClient.add(gig);
+		servletResponse.sendRedirect("/success");
 	}
 
 }

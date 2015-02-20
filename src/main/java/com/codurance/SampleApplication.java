@@ -11,11 +11,16 @@ import io.dropwizard.views.ViewBundle;
 
 public class SampleApplication extends Application<SampleConfiguration> {
 
+	private final CassandraClient client;
+
 	public static void main(String[] args) throws Exception {
-		new SampleApplication().run(args);
 		CassandraClient client = new CassandraClient();
 		client.connect("127.0.0.1");
-		client.close();
+		new SampleApplication(client).run(args);
+	}
+
+	public SampleApplication(CassandraClient client) {
+		this.client = client;
 	}
 
 	@Override
@@ -32,6 +37,6 @@ public class SampleApplication extends Application<SampleConfiguration> {
 	@Override
 	public void run(SampleConfiguration sampleConfiguration, Environment environment) throws Exception {
 		environment.jersey().register(new HelloWorldResource());
-		environment.jersey().register(new GigResource());
+		environment.jersey().register(new GigResource(client));
 	}
 }

@@ -8,20 +8,20 @@
 				<h1>List a new music gig</h1>
 				<form action="/gigs/create" method="post">
 					<div class="form-group">
-						<label for="eventName">Event Name</label>
-						<input type="text" class="form-control" id="gigListingName">
+						<label for="gigListingName">Event Name</label>
+						<input type="text" class="form-control" name="gigListingName">
 					</div>
 					<div class="form-group">
-						<label for="artist">Artist</label>
-						<input type="text" class="form-control" id="gigListingArtist" >
+						<label for="gigListingArtist">Artist</label>
+						<input type="text" class="form-control" name="gigListingArtist" >
 					</div>
 					<div class="form-group">
-						<label for="eventDate">Event Date</label>
-						<input type="date" class="form-control" id="gigListingDate">
+						<label for="gigListingDate">Event Date</label>
+						<input type="date" class="form-control" name="gigListingDate">
 					</div>
 					<div class="form-group">
-						<label for="eventLocation">Location</label>
-						<input type="text" class="form-control" id="gigListingLocation" >
+						<label for="gigListingLocation">Location</label>
+						<input type="text" class="form-control" name="gigListingLocation" >
 					</div>
 					<button type="submit" class="btn btn-primary">Submit</button>
 				</form>
