@@ -10,7 +10,7 @@ public class CassandraClient {
 	public static final ZoneId ZONE_ID = ZoneId.of("Europe/London");
 	private Cluster cluster;
 	private Session session;
-	private PreparedStatement addGig;
+	private PreparedStatement addEvent;
 
 	public void connect(String node) {
 		cluster = Cluster.builder()
@@ -44,7 +44,7 @@ public class CassandraClient {
 						"PRIMARY KEY (date, location)" +
 						");");
 
-		addGig = session.prepare(
+		addEvent = session.prepare(
 				"INSERT INTO gig_listings.events" +
 				" (name, artist, date, location)" +
 				" VALUES(?, ?, ?, ?);");
@@ -56,6 +56,6 @@ public class CassandraClient {
 
 	public void add(Event event) {
 		Date eventDate = Date.from(event.getDate().atStartOfDay(ZONE_ID).toInstant());
-		session.execute(new BoundStatement(addGig).bind(event.getName(), event.getArtist(), eventDate, event.getLocation()));
+		session.execute(new BoundStatement(addEvent).bind(event.getName(), event.getArtist(), eventDate, event.getLocation()));
 	}
 }
