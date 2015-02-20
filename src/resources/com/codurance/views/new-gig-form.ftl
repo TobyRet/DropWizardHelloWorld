@@ -16,6 +16,16 @@
 						<input type="text" class="form-control" name="gigListingArtist" >
 					</div>
 					<div class="form-group">
+						<label for="gigListingGenre">Genre</label>
+						<select class="form-control" type="text" name="gigListingGenre">
+						  <option>Donk</option>
+						  <option>Anything-core</option>
+						  <option>Pirate Sludge Metal</option>
+						  <option>Classical</option>
+						  <option>Doom-pop</option>
+						</select>
+					</div>
+					<div class="form-group">
 						<label for="gigListingDate">Event Date</label>
 						<input type="date" class="form-control" name="gigListingDate">
 					</div>

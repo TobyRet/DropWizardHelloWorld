@@ -2,7 +2,8 @@ package com.codurance.resources;
 
 import com.codurance.db.CassandraClient;
 import com.codurance.model.Event;
-import com.codurance.views.GigFormView;
+import com.codurance.views.EventFormView;
+import com.codurance.views.EventsView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
@@ -15,25 +16,25 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
-@Path("gigs")
-public class GigResource {
+@Path("events")
+public class EventsResource {
 	public static final DateTimeFormatter DATE_CONVERSION = DateTimeFormatter.ISO_LOCAL_DATE;
 	private final CassandraClient cassandraClient;
 
-	public GigResource(CassandraClient cassandraClient) {
+	public EventsResource(CassandraClient cassandraClient) {
 		this.cassandraClient = cassandraClient;
 	}
 
 	@GET
 	@Path("/new")
-	public GigFormView getAllGigs() {
-		return new GigFormView();
+	public EventFormView getNewEventForm() {
+		return new EventFormView();
 	}
 
 	@GET
-	@Path("success")
-	public String eventAddedSuccessfully() {
-		return "Event added successfully";
+	@Path("/all")
+	public EventsView getAllEvents() {
+		return new EventsView();
 	}
 
 	@POST
@@ -41,12 +42,13 @@ public class GigResource {
 	public void create( @FormParam("gigListingName") String name,
 						@FormParam("gigListingArtist") String artist,
 						@FormParam("gigListingDate") String dateText,
+						@FormParam("gigListingGenre") String genre,
 						@FormParam("gigListingLocation") String location,
 						@Context HttpServletResponse servletResponse) throws IOException {
 
 		LocalDate date = LocalDate.parse(dateText, DATE_CONVERSION);
 
-		Event event = new Event(name, artist, date, location);
+		Event event = new Event(name, artist, date, genre, location);
 		cassandraClient.add(event);
 		servletResponse.sendRedirect("/success");
 	}

@@ -40,14 +40,15 @@ public class CassandraClient {
 						"name text," +
 						"artist text," +
 						"date timestamp," +
+						"genre text," +
 						"location text," +
 						"PRIMARY KEY (date, location)" +
 						");");
 
 		addEvent = session.prepare(
 				"INSERT INTO gig_listings.events" +
-				" (name, artist, date, location)" +
-				" VALUES(?, ?, ?, ?);");
+				" (name, artist, date, genre, location)" +
+				" VALUES(?, ?, ?, ?, ?);");
 	}
 
 	public void close() {
@@ -56,6 +57,6 @@ public class CassandraClient {
 
 	public void add(Event event) {
 		Date eventDate = Date.from(event.getDate().atStartOfDay(ZONE_ID).toInstant());
-		session.execute(new BoundStatement(addEvent).bind(event.getName(), event.getArtist(), eventDate, event.getLocation()));
+		session.execute(new BoundStatement(addEvent).bind(event.getName(), event.getArtist(), eventDate, event.getGenre(), event.getLocation()));
 	}
 }

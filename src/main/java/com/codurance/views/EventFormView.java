@@ -2,8 +2,8 @@ package com.codurance.views;
 
 import io.dropwizard.views.View;
 
-public class GigFormView extends View {
-	public GigFormView() {
+public class EventFormView extends View {
+	public EventFormView() {
 		super("new-gig-form.ftl");
 	}
 }
