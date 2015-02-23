@@ -14,19 +14,23 @@ public class CassandraClient {
 				.addContactPoint(node)
 				.build();
 
+		databaseHealthCheck();
+
+		session = cluster.connect();
+		createSchema();
+	}
+
+	private void databaseHealthCheck() {
 		Metadata metadata = cluster.getMetadata();
 
 		System.out.printf("Connected to cluster: %s%n", metadata.getClusterName());
 
 		for (Host host : metadata.getAllHosts()) {
-			System.out.printf("Datacentre: %s%n; Host: %s%n; Rack: %s%n",
+			System.out.printf("Datacentre: %s; Host: %s; Rack: %s%n",
 					host.getDatacenter(),
 					host.getAddress(),
 					host.getRack());
 		}
-
-		session = cluster.connect();
-		createSchema();
 	}
 
 
@@ -47,11 +51,11 @@ public class CassandraClient {
 		return session.prepare(statement);
 	}
 
-	public void close() {
-		cluster.close();
-	}
-
 	public ResultSet execute(BoundStatement boundEvent) {
 		return session.execute(boundEvent);
+	}
+
+	public void close() {
+		cluster.close();
 	}
 }
