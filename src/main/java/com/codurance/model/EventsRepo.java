@@ -22,8 +22,12 @@ public class EventsRepo {
 
 	public void add(Event event) {
 		Date eventDate = Date.from(event.getDate().atStartOfDay(CassandraClient.ZONE_ID).toInstant());
-		BoundStatement boundEvent = new BoundStatement(addEvent).bind(event.getName(), event.getArtist(), eventDate, event.getGenre(), event.getLocation());
+		BoundStatement boundEvent = new BoundStatement(addEvent).bind(
+													event.getName(),
+													event.getArtist(),
+													eventDate,
+													event.getGenre(),
+													event.getLocation());
 		cassandraClient.execute(boundEvent);
 	}
-
 }

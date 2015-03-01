@@ -3,8 +3,6 @@ package com.codurance.resources;
 import com.codurance.model.Event;
 import com.codurance.model.EventsRepo;
 import com.codurance.views.EventFormView;
-import com.codurance.views.EventsView;
-import com.google.common.collect.ImmutableList;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
@@ -15,16 +13,15 @@ import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 
-@Path("/events")
-public class EventsResource {
+@Path("/event")
+public class EventResource {
 	public static final DateTimeFormatter DATE_CONVERSION = DateTimeFormatter.ISO_LOCAL_DATE;
-	private final EventsRepo events;
+	private final EventsRepo eventsRepo;
 
-	public EventsResource(EventsRepo events) {
-		this.events = events;
+	public EventResource(EventsRepo eventsRepo) {
+		this.eventsRepo = eventsRepo;
 	}
 
 	@GET
@@ -33,16 +30,15 @@ public class EventsResource {
 		return new EventFormView();
 	}
 
-	@GET
-	@Path("/all")
-	public EventsView getAllEvents() {
-		List<String> list = ImmutableList.of("red", "green", "blue");
-		return new EventsView(list);
-
-	}
+//	@GET
+//	@Path("/all")
+//	public EventsView getAllEvents() {
+//		List<String> list = ImmutableList.of("red", "green", "blue");
+//		return new EventsView(list);
+//
+//	}
 
 	@POST
-	@Path("/create")
 	public void create( @FormParam("gigListingName") String name,
 						@FormParam("gigListingArtist") String artist,
 						@FormParam("gigListingDate") String dateText,
@@ -53,8 +49,8 @@ public class EventsResource {
 		LocalDate date = LocalDate.parse(dateText, DATE_CONVERSION);
 
 		Event event = new Event(name, artist, date, genre, location);
-		events.add(event);
-		servletResponse.sendRedirect("/events/all");
+		eventsRepo.add(event);
+		servletResponse.sendRedirect("/eventsRepo/all");
 	}
 
 }
