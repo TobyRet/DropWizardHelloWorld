@@ -3,15 +3,16 @@ package com.codurance.model;
 import com.codurance.db.CassandraClient;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
+import com.datastax.driver.core.Session;
 
 import java.util.Date;
 
-public class Events {
+public class EventsRepo {
 
-	private final CassandraClient cassandraClient;
+	private final Session cassandraClient;
 	private final PreparedStatement addEvent;
 
-	public Events(CassandraClient cassandraClient) {
+	public EventsRepo(Session cassandraClient) {
 		this.cassandraClient = cassandraClient;
 		this.addEvent = cassandraClient.prepare(
 				"INSERT INTO gig_listings.events" +

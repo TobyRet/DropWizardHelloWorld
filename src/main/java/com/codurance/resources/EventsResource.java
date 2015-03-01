@@ -1,7 +1,7 @@
 package com.codurance.resources;
 
 import com.codurance.model.Event;
-import com.codurance.model.Events;
+import com.codurance.model.EventsRepo;
 import com.codurance.views.EventFormView;
 import com.codurance.views.EventsView;
 import com.google.common.collect.ImmutableList;
@@ -21,9 +21,9 @@ import java.util.List;
 @Path("/events")
 public class EventsResource {
 	public static final DateTimeFormatter DATE_CONVERSION = DateTimeFormatter.ISO_LOCAL_DATE;
-	private final Events events;
+	private final EventsRepo events;
 
-	public EventsResource(Events events) {
+	public EventsResource(EventsRepo events) {
 		this.events = events;
 	}
 
