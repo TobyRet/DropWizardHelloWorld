@@ -30,4 +30,8 @@ public class EventsRepo {
 													event.getLocation());
 		cassandraClient.execute(boundEvent);
 	}
+
+	public Event fetchEvent(String eventName) {
+		return null;
+	}
 }

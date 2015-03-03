@@ -3,16 +3,16 @@ package com.codurance.resources;
 import com.codurance.model.Event;
 import com.codurance.model.EventsRepo;
 import com.codurance.views.EventFormView;
+import com.codurance.views.EventView;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import java.io.IOException;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import static javax.ws.rs.core.Response.seeOther;
 
 
 @Path("/event")
@@ -30,27 +30,25 @@ public class EventResource {
 		return new EventFormView();
 	}
 
-//	@GET
-//	@Path("/all")
-//	public EventsView getAllEvents() {
-//		List<String> list = ImmutableList.of("red", "green", "blue");
-//		return new EventsView(list);
-//
-//	}
+	@GET
+	@Path("{eventName}")
+	@Produces("text/html")
+	public EventView getEvent(@PathParam("eventName") String eventName) {
+		return new EventView(eventsRepo.fetchEvent(eventName));
+	}
 
 	@POST
-	public void create( @FormParam("gigListingName") String name,
-						@FormParam("gigListingArtist") String artist,
-						@FormParam("gigListingDate") String dateText,
-						@FormParam("gigListingGenre") String genre,
-						@FormParam("gigListingLocation") String location,
-						@Context HttpServletResponse servletResponse) throws IOException {
+	public ResponseBuilder create(@FormParam("gigListingName") String name,
+                                   @FormParam("gigListingArtist") String artist,
+                                   @FormParam("gigListingDate") String dateText,
+                                   @FormParam("gigListingGenre") String genre,
+                                   @FormParam("gigListingLocation") String location) throws IOException {
 
 		LocalDate date = LocalDate.parse(dateText, DATE_CONVERSION);
 
 		Event event = new Event(name, artist, date, genre, location);
 		eventsRepo.add(event);
-		servletResponse.sendRedirect("/eventsRepo/all");
+		return seeOther(URI.create("/"));
 	}
 
 }
