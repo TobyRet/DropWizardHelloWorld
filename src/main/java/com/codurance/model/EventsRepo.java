@@ -31,7 +31,7 @@ public class EventsRepo {
 		cassandraClient.execute(boundEvent);
 	}
 
-	public Event fetchEvent(String eventName) {
+	public Event fetchEvent(int eventName) {
 		return null;
 	}
 }

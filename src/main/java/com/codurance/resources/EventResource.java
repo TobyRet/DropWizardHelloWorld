@@ -3,19 +3,25 @@ package com.codurance.resources;
 import com.codurance.model.Event;
 import com.codurance.model.EventsRepo;
 import com.codurance.views.EventFormView;
-import com.codurance.views.EventView;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static javax.ws.rs.core.Response.seeOther;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-
+@Api(value="event", description="Operations about events")
 @Path("/event")
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 public class EventResource {
 	public static final DateTimeFormatter DATE_CONVERSION = DateTimeFormatter.ISO_LOCAL_DATE;
 	private final EventsRepo eventsRepo;
@@ -31,13 +37,14 @@ public class EventResource {
 	}
 
 	@GET
-	@Path("{eventName}")
-	@Produces("text/html")
-	public EventView getEvent(@PathParam("eventName") String eventName) {
-		return new EventView(eventsRepo.fetchEvent(eventName));
+	@Path("/{eventId}")
+	public String getEvent(@PathParam("eventId") String eventId) {
+		return eventsRepo.fetchEvent(Integer.parseInt(eventId)).getArtist();
 	}
 
 	@POST
+	@ApiOperation(value = "Create a new event")
+	@ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid input") })
 	public ResponseBuilder create(@FormParam("gigListingName") String name,
                                    @FormParam("gigListingArtist") String artist,
                                    @FormParam("gigListingDate") String dateText,
@@ -47,8 +54,9 @@ public class EventResource {
 		LocalDate date = LocalDate.parse(dateText, DATE_CONVERSION);
 
 		Event event = new Event(name, artist, date, genre, location);
+
 		eventsRepo.add(event);
-		return seeOther(URI.create("/"));
+		return Response.seeOther(URI.create("/"));
 	}
 
 }

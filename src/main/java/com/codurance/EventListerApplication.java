@@ -10,6 +10,7 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
 
 public class EventListerApplication extends Application<EventListerConfiguration> {
 
@@ -24,6 +25,7 @@ public class EventListerApplication extends Application<EventListerConfiguration
 	public void initialize(Bootstrap<EventListerConfiguration> bootstrap) {
 		bootstrap.addBundle(new AssetsBundle("/assets"));
 		bootstrap.addBundle(new ViewBundle());
+		bootstrap.addBundle(new SwaggerBundle<EventListerConfiguration>());
 	}
 
 	@Override
